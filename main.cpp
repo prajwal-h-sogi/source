@@ -13,74 +13,55 @@ public:
     float marks;
 
     Student(int i, string n, int a, float m) : id(i), name(n), age(a), marks(m) {}
-
-    void display() {
-        cout << "ID: " << id << "\nName: " << name << "\nAge: " << age << "\nMarks: " << marks << "\n";
-    }
+    void display();
 };
+
+void Student::display() {
+    cout << "ID: " << id << "\nName: " << name << "\nAge: " << age << "\nMarks: " << marks << "\n";
+}
 
 class StudentManagement {
 private:
     vector<Student> students;
     int nextId = 1;
+    static string toLower(const string& str);
 
 public:
-    void addStudent(string name, int age, float marks) {
-        students.push_back(Student(nextId++, name, age, marks));
-        cout << "Student added.\n";
-    }
-
-    Student* findStudent(int id) {
-        for (auto &s : students)
-            if (s.id == id) return &s;
-        return nullptr;
-    }
-
-    void updateStudent(int id, string name, int age, float marks) {
-        Student* s = findStudent(id);
-        if (!s) {
-            cout << "Student not found.\n";
-            return;
-        }
-        s->name = name;
-        s->age = age;
-        s->marks = marks;
-        cout << "Student updated.\n";
-    }
-
-    void deleteStudent(int id) {
-        auto it = remove_if(students.begin(), students.end(), [id](Student &s) { return s.id == id; });
-        if (it != students.end()) {
-            students.erase(it, students.end());
-            cout << "Student deleted.\n";
-        } else {
-            cout << "Student not found.\n";
-        }
-    }
-
-    void displayAll() {
-        cout << "Students:\n";
-        for (auto &s : students) {
-            s.display();
-            cout << "----\n";
-        }
-    }
-
-    void displayTopPerformers(int n) {
-        sort(students.begin(), students.end(), [](Student &a, Student &b) {
-            return a.marks > b.marks;
-        });
-        cout << "Top " << n << " performers:\n";
-        for (int i = 0; i < n && i < (int)students.size(); i++) {
-            students[i].display();
-            cout << "----\n";
-        }
-    }
+    void addStudent(string name, int age, float marks);
+    void updateStudent(int id, string name, int age, float marks);
+    void deleteStudent(int id);
+    void displayAll();
+    void displayTopPerformers(int n);
+    void searchByName(string query);
+    void displayByAgeRange(int minAge, int maxAge);
 };
+
+string StudentManagement::toLower(const string& str) {
+    string lowerStr = str;
+    transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), ::tolower);
+    return lowerStr;
+}
+
+// Function stubs (implement in respective branches)
+void StudentManagement::addStudent(string name, int age, float marks) { cout << "Feature not implemented.\n"; }
+void StudentManagement::updateStudent(int id, string name, int age, float marks) { cout << "Feature not implemented.\n"; }
+void StudentManagement::deleteStudent(int id) { cout << "Feature not implemented.\n"; }
+void StudentManagement::displayAll() { cout << "Feature not implemented.\n"; }
+void StudentManagement::displayTopPerformers(int n) { cout << "Feature not implemented.\n"; }
+void StudentManagement::searchByName(string query) { cout << "Feature not implemented.\n"; }
+void StudentManagement::displayByAgeRange(int minAge, int maxAge) { cout << "Feature not implemented.\n"; }
 
 void showMenu() {
     cout << "\n--- Student Management System ---\n";
-    cout << "1. Add Student\n2. Update Student\n3. Delete Student\n4. Display All Students\n5. Display Top Performers\n6. Exit\nEnter choice: ";
+    cout << "1. Add Student\n";
+    cout << "2. Update Student\n";
+    cout << "3. Delete Student\n";
+    cout << "4. Display All Students\n";
+    cout << "5. Display Top Performers\n";
+    cout << "6. Search by Name\n";
+    cout << "7. Display by Age Range\n";
+    cout << "8. Exit\n";
+    cout << "Enter choice: ";
 }
 
 int main() {
@@ -92,64 +73,21 @@ int main() {
         cin >> choice;
         cin.ignore();
 
-        if (choice == 6) break;
+        if (choice == 8) break;
 
         switch (choice) {
-            case 1: {
-                string name;
-                int age;
-                float marks;
-                cout << "Enter name: ";
-                getline(cin, name);
-                cout << "Enter age: ";
-                cin >> age;
-                cout << "Enter marks: ";
-                cin >> marks;
-                cin.ignore();
-                sm.addStudent(name, age, marks);
-                break;
-            }
-            case 2: {
-                int id, age;
-                float marks;
-                string name;
-                cout << "Enter student ID to update: ";
-                cin >> id;
-                cin.ignore();
-                cout << "Enter new name: ";
-                getline(cin, name);
-                cout << "Enter new age: ";
-                cin >> age;
-                cout << "Enter new marks: ";
-                cin >> marks;
-                cin.ignore();
-                sm.updateStudent(id, name, age, marks);
-                break;
-            }
-            case 3: {
-                int id;
-                cout << "Enter student ID to delete: ";
-                cin >> id;
-                cin.ignore();
-                sm.deleteStudent(id);
-                break;
-            }
-            case 4:
-                sm.displayAll();
-                break;
-            case 5: {
-                int n;
-                cout << "Enter number of top performers to display: ";
-                cin >> n;
-                cin.ignore();
-                sm.displayTopPerformers(n);
-                break;
-            }
-            default:
-                cout << "Invalid choice.\n";
+            case 1: sm.addStudent("", 0, 0.0); break;
+            case 2: sm.updateStudent(0, "", 0, 0.0); break;
+            case 3: sm.deleteStudent(0); break;
+            case 4: sm.displayAll(); break;
+            case 5: sm.displayTopPerformers(0); break;
+            case 6: sm.searchByName(""); break;
+            case 7: sm.displayByAgeRange(0, 0); break;
+            default: cout << "Invalid choice.\n";
         }
     }
 
     cout << "Exiting...\n";
     return 0;
 }
+
