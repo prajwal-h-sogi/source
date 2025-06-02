@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-
 using namespace std;
 
 class Student {
@@ -76,11 +75,54 @@ public:
             cout << "----\n";
         }
     }
+
+    void searchByName(string keyword) {
+        bool found = false;
+        for (auto &s : students) {
+            if (s.name.find(keyword) != string::npos) {
+                s.display();
+                cout << "----\n";
+                found = true;
+            }
+        }
+        if (!found) cout << "No student found with name containing '" << keyword << "'.\n";
+    }
+
+    void displayAverageMarks() {
+        if (students.empty()) {
+            cout << "No students available to calculate average marks.\n";
+            return;
+        }
+        float total = 0;
+        for (auto &s : students) total += s.marks;
+        cout << "Average Marks: " << total / students.size() << "\n";
+    }
+
+    void displayAboveMarks(float threshold) {
+        bool found = false;
+        for (auto &s : students) {
+            if (s.marks > threshold) {
+                s.display();
+                cout << "----\n";
+                found = true;
+            }
+        }
+        if (!found) cout << "No student found with marks above " << threshold << ".\n";
+    }
 };
 
 void showMenu() {
     cout << "\n--- Student Management System ---\n";
-    cout << "1. Add Student\n2. Update Student\n3. Delete Student\n4. Display All Students\n5. Display Top Performers\n6. Exit\nEnter choice: ";
+    cout << "1. Add Student\n";
+    cout << "2. Update Student\n";
+    cout << "3. Delete Student\n";
+    cout << "4. Display All Students\n";
+    cout << "5. Display Top Performers\n";
+    cout << "6. Search Student by Name\n";
+    cout << "7. Display Average Marks\n";
+    cout << "8. Display Students with Marks Above Threshold\n";
+    cout << "9. Exit\n";
+    cout << "Enter choice: ";
 }
 
 int main() {
@@ -92,7 +134,7 @@ int main() {
         cin >> choice;
         cin.ignore();
 
-        if (choice == 6) break;
+        if (choice == 9) break;
 
         switch (choice) {
             case 1: {
@@ -145,6 +187,24 @@ int main() {
                 sm.displayTopPerformers(n);
                 break;
             }
+            case 6: {
+                string keyword;
+                cout << "Enter name or part of name to search: ";
+                getline(cin, keyword);
+                sm.searchByName(keyword);
+                break;
+            }
+            case 7:
+                sm.displayAverageMarks();
+                break;
+            case 8: {
+                float threshold;
+                cout << "Enter mark threshold: ";
+                cin >> threshold;
+                cin.ignore();
+                sm.displayAboveMarks(threshold);
+                break;
+            }
             default:
                 cout << "Invalid choice.\n";
         }
@@ -153,3 +213,4 @@ int main() {
     cout << "Exiting...\n";
     return 0;
 }
+
